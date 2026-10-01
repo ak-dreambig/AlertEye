@@ -1,0 +1,23 @@
+# Flutter / Dart
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.idea/
+*.iml
+
+# Android local config
+local.properties
+.gradle/
+
+# Python
+__pycache__/
+.ipynb_checkpoints/
+venv/
+
+# Runtime output from the servers
+FYP Code/app + server/Server/eye_detection_server/uploaded_eyes/
+
+# OS
+.DS_Store
+Thumbs.db
