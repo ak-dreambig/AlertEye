@@ -157,4 +157,4 @@ We thank our supervisor, Dr. Hafeez Anwar, along with the faculty and peers at F
 
 ## License
 
-No license has been chosen yet. Add one (for example MIT) before making the repository public.
+This project is released under the [MIT License](LICENSE).
