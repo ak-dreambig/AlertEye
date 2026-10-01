@@ -39,22 +39,21 @@ UI designs from the project report (Chapter 5). They show the intended look of t
 |:---:|:---:|
 | <img src="docs/screenshots/09-account.png" width="170"> | <img src="docs/screenshots/10-settings.png" width="170"> |
 
-## How it works
+## System Architecture
 
-```
-┌──────────────────────── AlertEye (Flutter) ────────────────────────┐
-│ Camera frames ──► ML Kit face/eye landmarks ──► 40×40 eye crops    │
-│ Accelerometer + Gyroscope (sensors_plus) ──► JSON batches          │
-└───────────────┬───────────────────────────────────┬────────────────┘
-                │ POST /upload_eye_images           │ POST /upload-sensor-data
-                ▼ (port 8080)                       ▼ (port 5000)
-      Eye detection server (Flask)         Sensor server (Flask)
-      MobileNetV2 .tflite                  logs to sensor_data.csv
-      → "eye open" / "eye closed"          (ConvLSTM2D .tflite validated offline)
-                │
-                ▼
-   App aggregates results → majority "eye closed" → dialog + alarm
-```
+### On the phone (AlertEye app)
+
+<p align="center"><img src="docs/architecture/mobile-architecture.png" width="560" alt="Mobile architecture of AlertEye"></p>
+
+The app sends camera frames through image preprocessing (eye-region extraction and driver classification). The cropped eyes go to the eye-state model and the driver image goes to the yawn model. Gyroscope and accelerometer data go to the sensor model. Every prediction feeds the alarm system, which alerts the driver.
+
+### Model development (computer)
+
+<p align="center"><img src="docs/architecture/training-architecture.png" width="760" alt="Model training pipeline"></p>
+
+Models are built on a computer in four stages: data preprocessing, model training, model evaluation and refinement, and conversion to TensorFlow Lite for the app.
+
+In the current code, the eye-state model runs on a Flask server (port 8080). The sensor server (port 5000) only logs readings, and yawn detection is not deployed (see [Limitations](#limitations-and-future-work)).
 
 ## Repository structure
 
